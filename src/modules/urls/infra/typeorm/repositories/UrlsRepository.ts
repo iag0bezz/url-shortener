@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-plusplus */
 import { getRepository, Repository } from 'typeorm';
 
 import { ICreateUrlDTO } from '@modules/urls/dtos/ICreateUrlDTO';
@@ -32,14 +34,22 @@ export class UrlsRepository implements IUrlsRepository {
     return url;
   }
 
+  async incrementClick(url: Url): Promise<Url> {
+    url.clicks++;
+
+    return this.create({
+      ...url,
+    });
+  }
+
   async findById(id: string): Promise<Url> {
     const url = await this.repository.findOne(id);
 
     return url;
   }
 
-  async findByNameAndUser(name: string, user_id: string): Promise<Url> {
-    const url = await this.repository.findOne({ name, user_id });
+  async findByName(name: string): Promise<Url> {
+    const url = await this.repository.findOne({ name });
 
     return url;
   }

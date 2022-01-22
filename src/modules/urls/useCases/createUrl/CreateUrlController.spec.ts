@@ -74,28 +74,4 @@ describe('Create Url Controller', () => {
 
     expect(response.status).toBe(400);
   });
-
-  it('should be able to create shorter url with same name if is different user', async () => {
-    const responseToken = await request(app).post('/sessions').send({
-      email: 'user_2@test.com',
-      password: 'password',
-    });
-
-    const { token } = responseToken.body;
-
-    const response = await request(app)
-      .post('/urls')
-      .send({
-        name: 'Url Test',
-        original_url: 'https://www.google.com/',
-      })
-      .set({
-        Authorization: `Bearer ${token}`,
-      });
-
-    expect(response.status).toBe(201);
-    expect(response.body).toHaveProperty('id');
-    expect(response.body.name).toBe('Url Test');
-    expect(response.body.original_url).toBe('https://www.google.com/');
-  });
 });

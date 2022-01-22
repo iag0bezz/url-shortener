@@ -25,18 +25,17 @@ export class CreateUrlUseCase {
       throw new CreateUrlError('User not found.');
     }
 
-    const urlExists = await this.urlsRepository.findByNameAndUser(
-      name,
-      user_id,
-    );
+    const urlExists = await this.urlsRepository.findByName(name);
 
     if (urlExists) {
       throw new CreateUrlError('You already have another URL with this name.');
     }
 
+    const formatted_original_url = original_url.replace(/\s/g, '');
+
     const url = await this.urlsRepository.create({
       name,
-      original_url,
+      original_url: formatted_original_url,
       user_id,
     });
 

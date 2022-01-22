@@ -14,6 +14,7 @@ export class CreateUrls1642869332122 implements MigrationInterface {
           {
             name: 'name',
             type: 'varchar',
+            isUnique: true,
           },
           {
             name: 'clicks',

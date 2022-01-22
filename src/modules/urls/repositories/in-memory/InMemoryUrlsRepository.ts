@@ -4,7 +4,7 @@ import { Url } from '@modules/urls/infra/typeorm/entities/Url';
 import { IUrlsRepository } from '../IUrlsRepository';
 
 export class InMemoryUrlsRepository implements IUrlsRepository {
-  urls: Url[] = [];
+  public urls: Url[] = [];
 
   async create({
     name,
@@ -27,16 +27,22 @@ export class InMemoryUrlsRepository implements IUrlsRepository {
     return url;
   }
 
+  async incrementClick(url: Url): Promise<Url> {
+    Object.assign(url, {
+      clicks: url.clicks + 1,
+    });
+
+    return url;
+  }
+
   async findById(id: string): Promise<Url> {
     const url = this.urls.find(url => url.id === id);
 
     return url;
   }
 
-  async findByNameAndUser(name: string, user_id: string): Promise<Url> {
-    const url = this.urls.find(
-      url => url.name === name && url.user_id === user_id,
-    );
+  async findByName(name: string): Promise<Url> {
+    const url = this.urls.find(url => url.name === name);
 
     return url;
   }
