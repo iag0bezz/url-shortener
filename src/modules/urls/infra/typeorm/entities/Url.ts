@@ -1,19 +1,22 @@
 import { Column, CreateDateColumn, Entity, PrimaryColumn } from 'typeorm';
 import { v4 as uuidV4 } from 'uuid';
 
-@Entity('users')
-export class User {
+@Entity('urls')
+export class Url {
   @PrimaryColumn()
   id: string;
+
+  @Column()
+  original_url: string;
 
   @Column()
   name: string;
 
   @Column()
-  email: string;
+  clicks: number;
 
   @Column()
-  password: string;
+  user_id: string;
 
   @CreateDateColumn()
   created_at: Date;

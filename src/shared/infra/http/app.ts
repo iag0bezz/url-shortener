@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import 'express-async-errors';
 
 import 'reflect-metadata';
@@ -15,17 +15,25 @@ app.use(express.json());
 
 app.use(routes);
 
-app.use((error: Error, _request: Request, response: Response) => {
-  if (error instanceof HttpError) {
-    return response.status(error.statusCode).json({
-      message: error.message,
-    });
-  }
+app.use(
+  (
+    error: Error,
+    _request: Request,
+    response: Response,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _next: NextFunction,
+  ) => {
+    if (error instanceof HttpError) {
+      return response.status(error.statusCode).json({
+        message: error.message,
+      });
+    }
 
-  return response.status(500).json({
-    status: 'error',
-    message: `Internal server error - ${error.message}`,
-  });
-});
+    return response.status(500).json({
+      status: 'error',
+      message: `Internal server error - ${error.message}`,
+    });
+  },
+);
 
 export { app };
